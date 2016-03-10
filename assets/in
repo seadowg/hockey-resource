@@ -1,0 +1,3 @@
+#!/usr/local/bin/ruby
+
+puts '{ "version": { "ref": "0" } }'
