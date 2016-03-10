@@ -17,6 +17,7 @@ a path to the binary to be uploaded.
 #### Parameters
 
 * `path`: *Required.* Path to the binary to upload.
+* `downloadable`: *Required.* If `true` the new version will be made available for download.
 
 ### `in`: Download an app binary for a given version
 
