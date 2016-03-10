@@ -1,20 +1,7 @@
 #!/usr/local/bin/ruby
 
-require 'rest_client'
-require 'json'
+require 'rest-client'
+require_relative './lib/out'
 
-stdin = STDIN.read
-json = JSON.parse(stdin)
-
-app_id = json["source"]["app_id"]
-token = json["source"]["token"]
-path = json["params"]["path"]
-
-response = RestClient.post("https://rink.hockeyapp.net/api/2/apps/#{app_id}/app_versions/upload",
-  { :ipa => File.new("#{ARGV[0]}/#{path}")},
-  { "X-HockeyAppToken" => token })
-
-version = JSON.parse(response)
-version_ref = version["id"]
-
-STDOUT.write "{ \"version\": { \"ref\": \"#{version_ref}\" } }"
+action = Out.new(ARGV, STDIN, STDOUT, RestClient, FileSystem.new)
+action.run
