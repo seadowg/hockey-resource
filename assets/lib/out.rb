@@ -30,7 +30,7 @@ class Out
       },
       :metadata => [
         {
-          :name => "Code",
+          :name => "Version Code",
           :value => version["version"]
         }
       ]

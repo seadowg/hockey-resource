@@ -56,7 +56,8 @@ describe 'out' do
     action.run
 
     response = JSON.parse(stdout.read)
-    expect(response["metadata"][0]["name"]).to eq("Code")
+
+    expect(response["metadata"][0]["name"]).to eq("Version Code")
     expect(response["metadata"][0]["value"]).to eq("9000")
   end
 
