@@ -2,6 +2,7 @@
 
 require 'rest-client'
 require_relative './lib/out'
+require_relative './lib/file_system'
 
 action = Out.new(ARGV, STDIN, STDOUT, RestClient, FileSystem.new)
 action.run

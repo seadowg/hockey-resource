@@ -1,11 +1,5 @@
 require 'json'
 
-class FileSystem
-  def get(path)
-    File.new(path)
-  end
-end
-
 class Out
   def initialize(args, stdin, stdout, rest_client, file_system)
     @args = args
