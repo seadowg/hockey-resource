@@ -4,13 +4,13 @@ require_relative 'test_utils'
 require_relative '../assets/lib/out'
 
 describe 'out' do
-  it 'sends binary to hockey' do
-    args = ["/working/dir"]
-    stdin = FakeIO.new
-    stdout = FakeIO.new
-    rest_client = FakeRestClient.new
-    fakefs = FakeFS.new
+  let(:args) { ["/working/dir"] }
+  let(:stdin) { FakeIO.new }
+  let(:stdout) { FakeIO.new }
+  let(:rest_client) { FakeRestClient.new }
+  let(:fakefs) { FakeFS.new }
 
+  it 'sends binary to hockey' do
     rest_client.add_response(
       "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
       hockey_version_response_with_id(9000)
@@ -30,12 +30,6 @@ describe 'out' do
   end
 
   it 'returns the new version id' do
-    args = ["/working/dir"]
-    stdin = FakeIO.new
-    stdout = FakeIO.new
-    rest_client = FakeRestClient.new
-    fakefs = FakeFS.new
-
     rest_client.add_response(
       "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
       hockey_version_response_with_id(9000)
@@ -52,12 +46,6 @@ describe 'out' do
 
   context "downloadable is true" do
     it "it specifies that version is downloadable" do
-      args = ["/working/dir"]
-      stdin = FakeIO.new
-      stdout = FakeIO.new
-      rest_client = FakeRestClient.new
-      fakefs = FakeFS.new
-
       rest_client.add_response(
         "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
         hockey_version_response_with_id(9000)
@@ -75,12 +63,6 @@ describe 'out' do
 
   context "downloadable is false" do
     it "it specifies that version is not downloadable" do
-      args = ["/working/dir"]
-      stdin = FakeIO.new
-      stdout = FakeIO.new
-      rest_client = FakeRestClient.new
-      fakefs = FakeFS.new
-
       rest_client.add_response(
         "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
         hockey_version_response_with_id(9000)
