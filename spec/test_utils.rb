@@ -4,16 +4,16 @@ def hockey_version_response_with_id(id)
     json
 end
 
-def input_json
-  <<-json
+def input_json(params)
+  json = JSON.parse(<<-json)
     {
       "source": {
         "app_id": "APP_ID",
         "token": "TOKEN"
-      },
-      "params": {
-        "path": "app.apk"
       }
     }
     json
+
+  json["params"] = params
+  json.to_json
 end

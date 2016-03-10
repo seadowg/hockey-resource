@@ -11,8 +11,12 @@ describe 'out' do
     rest_client = FakeRestClient.new
     fakefs = FakeFS.new
 
-    rest_client.add_response("https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload", hockey_version_response_with_id(9000))
-    stdin.write(input_json)
+    rest_client.add_response(
+      "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
+      hockey_version_response_with_id(9000)
+    )
+
+    stdin.write(input_json("path" => "app.apk"))
 
     action = Out.new(args, stdin, stdout, rest_client, fakefs)
     action.run
@@ -32,13 +36,63 @@ describe 'out' do
     rest_client = FakeRestClient.new
     fakefs = FakeFS.new
 
-    rest_client.add_response("https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload", hockey_version_response_with_id(9000))
-    stdin.write(input_json)
+    rest_client.add_response(
+      "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
+      hockey_version_response_with_id(9000)
+    )
+
+    stdin.write(input_json("path" => "app.apk"))
 
     action = Out.new(args, stdin, stdout, rest_client, fakefs)
     action.run
 
     response = JSON.parse(stdout.read)
     expect(response["version"]["ref"]).to eq("9000")
+  end
+
+  context "downloadable is true" do
+    it "it specifies that version is downloadable" do
+      args = ["/working/dir"]
+      stdin = FakeIO.new
+      stdout = FakeIO.new
+      rest_client = FakeRestClient.new
+      fakefs = FakeFS.new
+
+      rest_client.add_response(
+        "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
+        hockey_version_response_with_id(9000)
+      )
+
+      stdin.write(input_json("path" => "app.apk", "downloadable" => true))
+
+      action = Out.new(args, stdin, stdout, rest_client, fakefs)
+      action.run
+
+      request = rest_client.posts.first
+      expect(request.body[:status]).to eq(2)
+    end
+  end
+
+  context "downloadable is false" do
+    it "it specifies that version is not downloadable" do
+      args = ["/working/dir"]
+      stdin = FakeIO.new
+      stdout = FakeIO.new
+      rest_client = FakeRestClient.new
+      fakefs = FakeFS.new
+
+      rest_client.add_response(
+        "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
+        hockey_version_response_with_id(9000)
+      )
+
+      stdin.write(input_json("path" => "app.apk", "downloadable" => false))
+
+      action = Out.new(args, stdin, stdout, rest_client, fakefs)
+      action.run
+
+      request = rest_client.posts.first
+      expect(request.body[:status]).to eq(1)
+    end
   end
 end

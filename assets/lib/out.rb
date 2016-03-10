@@ -22,9 +22,10 @@ class Out
     app_id = json["source"]["app_id"]
     token = json["source"]["token"]
     path = json["params"]["path"]
+    downloadable = json["params"]["downloadable"]
 
     response = @rest_client.post("https://rink.hockeyapp.net/api/2/apps/#{app_id}/app_versions/upload",
-      { :ipa => @file_system.get("#{@args[0]}/#{path}") },
+      { :ipa => @file_system.get("#{@args[0]}/#{path}"), :status => downloadable ? 2 : 1 },
       { "X-HockeyAppToken" => token })
 
     version = JSON.parse(response)
