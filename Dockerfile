@@ -8,4 +8,4 @@ RUN chmod +x /opt/resource/*
 RUN gem install bundle --no-rdoc --no-ri
 ADD Gemfile /opt/resource/
 WORKDIR /opt/resource
-RUN bundle
+RUN bundle install --without development test
