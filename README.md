@@ -8,10 +8,10 @@ resource_types:
       repository: seadowg/hockey-resource
 
 resources:
-  - name: github
+  - name: app-repo
     type: git
     source:
-      uri: https://github.com/robolectric/deckard.git
+      uri: https://github.com/user/app.git
       branch: master
 
   - name: hockey
@@ -23,11 +23,10 @@ resources:
 jobs:
   - name: package
     plan:
-      - get: github
+      - get: app-repo
         trigger: true
-        passed: [test]
       - task: package
-        file: github/concourse/tasks/package.yml
+        file: app-repo/concourse/tasks/package.yml
       - put: hockey
         params:
           path: package/app.apk
