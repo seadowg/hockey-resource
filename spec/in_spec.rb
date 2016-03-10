@@ -47,7 +47,7 @@ describe 'out' do
   it "returns version metadata" do
     rest_client.add_response(
       "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
-      hockey_version_response(version: 9000)
+      hockey_version_response(version: 9000, config_url: "http://version.com")
     )
 
     stdin.write(input_json("path" => "app.apk"))
@@ -59,6 +59,9 @@ describe 'out' do
 
     expect(response["metadata"][0]["name"]).to eq("Version Code")
     expect(response["metadata"][0]["value"]).to eq("9000")
+
+    expect(response["metadata"][1]["name"]).to eq("Version Page")
+    expect(response["metadata"][1]["value"]).to eq("http://version.com")
   end
 
   context "downloadable is true" do

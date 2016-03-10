@@ -32,6 +32,10 @@ class Out
         {
           :name => "Version Code",
           :value => version["version"]
+        },
+        {
+          :name => "Version Page",
+          :value => version["config_url"]
         }
       ]
     }
