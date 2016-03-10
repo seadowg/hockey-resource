@@ -23,8 +23,19 @@ class Out
       { "X-HockeyAppToken" => token })
 
     version = JSON.parse(response)
-    version_ref = version["id"]
 
-    @stdout.write "{ \"version\": { \"ref\": \"#{version_ref}\" } }"
+    output = {
+      :version => {
+        :ref => version["id"].to_s
+      },
+      :metadata => [
+        {
+          :name => "Code",
+          :value => version["version"]
+        }
+      ]
+    }
+
+    @stdout.write(JSON.generate(output))
   end
 end

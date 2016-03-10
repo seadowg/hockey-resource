@@ -13,7 +13,7 @@ describe 'out' do
   it 'sends binary to hockey' do
     rest_client.add_response(
       "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
-      hockey_version_response_with_id(9000)
+      hockey_version_response(id: 9000)
     )
 
     stdin.write(input_json("path" => "app.apk"))
@@ -32,7 +32,7 @@ describe 'out' do
   it 'returns the new version id' do
     rest_client.add_response(
       "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
-      hockey_version_response_with_id(9000)
+      hockey_version_response(id: 9000)
     )
 
     stdin.write(input_json("path" => "app.apk"))
@@ -44,11 +44,27 @@ describe 'out' do
     expect(response["version"]["ref"]).to eq("9000")
   end
 
+  it "returns version metadata" do
+    rest_client.add_response(
+      "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
+      hockey_version_response(version: 9000)
+    )
+
+    stdin.write(input_json("path" => "app.apk"))
+
+    action = Out.new(args, stdin, stdout, rest_client, fakefs)
+    action.run
+
+    response = JSON.parse(stdout.read)
+    expect(response["metadata"][0]["name"]).to eq("Code")
+    expect(response["metadata"][0]["value"]).to eq("9000")
+  end
+
   context "downloadable is true" do
     it "it specifies that version is downloadable" do
       rest_client.add_response(
         "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
-        hockey_version_response_with_id(9000)
+        hockey_version_response(id: 9000)
       )
 
       stdin.write(input_json("path" => "app.apk", "downloadable" => true))
@@ -65,7 +81,7 @@ describe 'out' do
     it "it specifies that version is not downloadable" do
       rest_client.add_response(
         "https://rink.hockeyapp.net/api/2/apps/APP_ID/app_versions/upload",
-        hockey_version_response_with_id(9000)
+        hockey_version_response(id: 9000)
       )
 
       stdin.write(input_json("path" => "app.apk", "downloadable" => false))
