@@ -1,4 +1,32 @@
-## hockey-resource
+# Hockey Resource
+
+A resource for pushing (and pulling) versions of an app from [Hockey App](http://hockeyapp.net/).
+
+## Source configuration
+
+* `app_id`: *Required.* The alphanumeric identifier for your app. Found on your app's page in Hockey.
+* `token`: *Required.* Your API token for Hockey. Can be found generated [here](https://rink.hockeyapp.net/manage/auth_tokens) (login required).
+
+## Behaviour
+
+### `out`: Upload an app binary to Hockey as a new version
+
+Uploads a new version of the app specified in the resource's source configuration. Requires
+a path to the binary to be uploaded.
+
+#### Parameters
+
+* `path`: *Required.* Path to the binary to upload.
+
+### `in`: Download an app binary for a given version
+
+*Under construction...*
+
+### `check`: Check for new versions
+
+*Under construction...*
+
+## Pipeline example
 
 ```yaml
 resource_types:
