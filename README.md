@@ -35,6 +35,7 @@ resource_types:
     type: docker-image
     source:
       repository: seadowg/hockey-resource
+      tag: 0.1.0
 
 resources:
   - name: app-repo
