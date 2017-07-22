@@ -40,7 +40,8 @@ describe 'out' do
     action = Out.new(args, stdin, stdout, rest_client, fakefs)
     action.run
 
-    response = JSON.parse(stdout.read)
+    response = JSON.parse(stdout.read)[0]
+
     expect(response["version"]["ref"]).to eq("9000")
   end
 
@@ -55,8 +56,7 @@ describe 'out' do
     action = Out.new(args, stdin, stdout, rest_client, fakefs)
     action.run
 
-    response = JSON.parse(stdout.read)
-
+    response = JSON.parse(stdout.read)[0]
     expect(response["metadata"][0]["name"]).to eq("Version Code")
     expect(response["metadata"][0]["value"]).to eq("9000")
 
