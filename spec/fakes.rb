@@ -51,7 +51,7 @@ end
 
 class FakeFS
   def get(path)
-    FakeFile.new(path)
+    [FakeFile.new(path)]
   end
 end
 
