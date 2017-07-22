@@ -11,35 +11,36 @@ class Out
 
   def run
     input = @stdin.read
-    json = JSON.parse(input)
+    json_args = JSON.parse(input)
+    path = json_args['params']['path']
+    responses = @file_system.get("#{@args[0]}/#{path}").map do |apk|
+      upload(apk, json_args)
+    end
+    output = responses.map { |r| parse_response(r) }
+    @stdout.write(JSON.generate(output))
+  end
 
-    app_id = json["source"]["app_id"]
-    token = json["source"]["token"]
-    path = json["params"]["path"]
-    downloadable = json["params"]["downloadable"]
+  private
 
-    response = @rest_client.post("https://rink.hockeyapp.net/api/2/apps/#{app_id}/app_versions/upload",
-      { :ipa => @file_system.get("#{@args[0]}/#{path}"), :status => downloadable ? 2 : 1 },
-      { "X-HockeyAppToken" => token })
-
-    version = JSON.parse(response)
-
-    output = {
-      :version => {
-        :ref => version["id"].to_s
-      },
-      :metadata => [
-        {
-          :name => "Version Code",
-          :value => version["version"]
-        },
-        {
-          :name => "Version Page",
-          :value => version["config_url"]
-        }
+  def parse_response(respose)
+    version = JSON.parse(respose)
+    {
+      version: { ref: version['id'].to_s },
+      metadata: [
+        { name: 'Version Code', value: version['version'] },
+        { name: 'Version Page', value: version['config_url'] }
       ]
     }
+  end
 
-    @stdout.write(JSON.generate(output))
+  def upload(apk, json)
+    app_id = json['source']['app_id']
+    token = json['source']['token']
+    downloadable = json['params']['downloadable']
+    @rest_client.post(
+      "https://rink.hockeyapp.net/api/2/apps/#{app_id}/app_versions/upload",
+      { ipa: apk, status: downloadable ? 2 : 1 },
+      'X-HockeyAppToken' => token
+    )
   end
 end
