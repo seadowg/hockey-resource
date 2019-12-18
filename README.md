@@ -1,4 +1,6 @@
-# Hockey Resource
+# Hockey Resource [RETIRED]
+
+**NOTE**: The resource has been retired as [Hockey](https://www.hockeyapp.net) is no longer running.
 
 A resource for pushing (and pulling) versions of an app from [Hockey App](http://hockeyapp.net/).
 
